@@ -1,0 +1,67 @@
+# ============================================================
+# SmartPen Features .gitignore
+# ============================================================
+
+# ─── 1. Compiled Binaries & Objects ─────────────────────────
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.out
+*.app
+*.elf
+*.bin
+
+
+# ─── 2. Build Directories ──────────────────────────────────
+[Bb]uild/
+[Oo]ut/
+[Bb]in/
+src/output/
+cmake-build-*/
+
+# ─── 3. IDE & Editor Private Files ──────────────────────────
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.vs/
+*.user
+*.userosscache
+*.sln
+*.vcxproj
+*.filters
+
+# ─── 4. Debug & Diagnostic Files ────────────────────────────
+*.pdb
+*.ilk
+*.idb
+*.exp
+*.gch
+*.pch
+
+# ─── 5. OS Specific Files ───────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V10
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# ─── 6. Project Specific ────────────────────────────────────
+*.log
+tmp/
+temp/
+
