@@ -1,75 +1,40 @@
-#pragma once // guard
+#pragma once
 #include <stdint.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-// coding
 
 // Constants
-#define  PEN_FEATURES_COUNT 354
-#define  PEN_STATIS_COUNT   11
-#define  PEN_SAMPLING_RATE  150.0f
-#define  PEN_DT             (1.0F / PEN_SAMPLING_RATE)
-#define  PEN_MIN_SAMPLES    150  
-#define  PEN_PRESSURE_THRESHOLD 0.05f
+#define PEN_FEATURES_COUNT       354
+#define PEN_STATIS_COUNT         11
+#define PEN_SAMPLING_RATE        150.0f
+#define PEN_DT                   (1.0f / PEN_SAMPLING_RATE)
+#define PEN_MIN_SAMPLES          150
+#define PEN_PRESSURE_THRESHOLD   0.05f
+#define PEN_ACCEL_TO_MM          9810.0f // 9.81 m/s^2 to mm/s^2
 
-
-
-
-
-// Error codes
-typedef enum{
-            PEN_OK          = 0,
-            PEN_ERR_NULL    = 1,
-            PEN_ERR_SAMPLES = 2,
-            PEN_ERR_MEMORY  = 3,
-}PenStatus;
-
-
-
-// Main Function (API)
+// Main API
+// Notice: x and y are REMOVED. We now compute them internally.
 float* compute_features(
-    const float* x,        // pointer to array from PMW3901
-    const float* y,        // pointer to array from PMW3901
-    const float* pressure, // pointer to array from FSR
-    const float* azimuth,  // pointer to array from MPU6050
-    const float* altitude, // pointer to array from MPU6050
-    const float* acc_x,    // pointer to array from MPU6050
-    const float* acc_y,    // pointer to array from MPU6050
-    int32_t      n_samples, // no.of samples of each array
-    int32_t*     out_size  // [out] will be set to 354 on success (354)
+    const float* acc_x,        // [IN] Acceleration X from IMU
+    const float* acc_y,        // [IN] Acceleration Y from IMU
+    const float* acc_z,        // [IN] Acceleration Z from IMU
+    const float* pressure,     // [IN] Pressure from FSR
+    const float* azimuth,      // [IN] Orientation
+    const float* altitude,     // [IN] Orientation
+    int32_t      n_samples,    // [IN] Number of samples
+    int32_t*     out_size      // [OUT] Will be 354
 );
-// @param ptr : pointer to float array returned by compute_function.
-/* This function must be called from the host language (dart) 
- * after the 354 features have been processed to prevent memory leaks in 
- * the NeuroVive diagnostic system.
-*/
-void free_features(float *ptr);
 
-// ── Utilities ─────────────────────────────────────────────
+void free_features(float* ptr);
 const char* SmartPen_features_version(void);
 const char* SmartPen_features_last_error(void);
 
-
-// ----------------------------
-// Helper functions for Testing
-// ----------------------------
-
-void compute_statistical_single(
-    const float* signal, // array (in)
-    int32_t     n, // no. of elements (in)
-    float* out // out 11 statical value (max, min, mean, median, ....)
-);
-
-void compute_button_status(
-    const float* pressure, // array of pressure (in)
-    int32_t      n,        // no of elements (in)
-    uint8_t*     out       // status_values (out)
-    );
-
-
+// Helper functions
+void compute_statistical_single(const float* signal, int32_t n, float* out);
+void compute_button_status(const float* pressure, int32_t n, uint8_t* out);
 
 #ifdef __cplusplus
 }
